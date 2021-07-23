@@ -6,54 +6,43 @@
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
-            <br> <br> <br> <br>
+        <BR><BR><BR><BR>
         </div>
     </div>
 </header>
-<!--d-flex flex-row bd-highlight mb-3"-->
+
+
   <!-- Main Content -->
-  <div class="container">
-
- <div >
-          <div class="float-right   d-flex flex-column">
-              <a class="btn btn-primary mb-2" href="{{url_for('add_new_post')}}">Novo Processo</a>
-
-              <a class="btn btn-primary mb-2" href="{{url_for('add_new_post')}}">Excluir Processo</a>
-          </div>
-
-     <div class="d-flex flex-row bd-highlight w-75  ">
-        {% set count = namespace(value=1) %}
-        {% for post in all_posts %}
-          {% if count.value == 5 %}
-            {% set count.value = 1 %}
-          </div>
-        <div class="d-flex flex-row bd-highlight w-75 ">
-          <div class="w-25 bg-light p-2 bd-highlight post-preview" >
-           {% else %}
-            <div class="w-25 bg-light p-2 bd-highlight post-preview" >
-                  {% endif %}
-        {% set count.value = count.value + 1 %}
-
-          <a href="{{ url_for('show_post', post_id=post.id) }}">
-            <h2 class="post-title">
-              {{post.RefPartner}}
-            </h2>
-            <h3 class="post-subtitle">
-              {{post.Cliente}}
-            </h3>
-             <a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
-          </a>
-          </div>
-        {% endfor %}
-          </div>
-   </div>
 
 
-
-      </div>
+<div class="container">
+    <div class="row">
+        <a class="btn btn-primary  btn-sm mb-2" href="{{url_for('add_new_post')}}">Novo Processo</a>
     </div>
-  </div>
-  </div>
+
+    <div class=" row    ">
+        {% set count = namespace(value=1) %}
+            {% for post in all_posts %}
+              {% if count.value == 5 %}
+                {% set count.value = 1 %}
+    </div>
+
+    <div class="row">
+        <div class=" bg-light p-2 post-preview  col-sm">
+            {% else %}
+            <div class=" bg-light p-2  post-preview col-sm" >
+                {% endif %}
+                {% set count.value = count.value + 1 %}
+                <a href="{{ url_for('show_post', post_id=post.id) }}">
+                    <h2 class="post-title"> {{post.RefPartner}} </h2>
+                    <h3 class="post-subtitle">{{post.Cliente}} </h3>
+                    <a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
   <hr>
 
-<!--{% include "footer.html" %}-->
+{% include "footer.html" %}
