@@ -17,12 +17,14 @@
 <!-- Post Content -->
 
     <div class="container">
-        <div class="column">
-                    <input class="btn btn-primary p-3 btn-sm mb-2" id="DadosGerais" name="submit1" type="submit" value="Salvar"> </input>
-                    <a  class="btn btn-primary  p-3 btn-sm mb-2" href="{{ url_for('get_all_posts') }}">Voltar</a>
-        </div>
+
 
         <form method="POST" action="{{ url_for('show_post', post_id = post.id ) }}">
+
+                    <div class="column">
+                    <input class="btn btn-primary p-3 btn-sm mb-2" id="DadosGerais" name="submit1" type="submit" value="Salvar">
+                    <a  class="btn btn-primary  p-3 btn-sm mb-2" href="{{ url_for('get_all_posts') }}">Voltar</a>
+        </div>
 
             <div class="row">
                 <div class=" bg-light p-5 post-preview " >
