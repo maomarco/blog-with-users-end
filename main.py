@@ -7,8 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm, FormDadosGerais
+from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm, FormDadosGerais, ContactForm
 from flask_gravatar import Gravatar
+from class_email import Class_email
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -31,7 +33,7 @@ def load_user(user_id):
 
 ##CONFIGURE TABLE
 class User(UserMixin, db.Model):
-    print("user")
+
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
@@ -55,7 +57,7 @@ class User(UserMixin, db.Model):
 
 
 class Comment(db.Model):
-    print("comment")
+
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))
@@ -65,7 +67,7 @@ class Comment(db.Model):
     text = db.Column(db.Text, nullable=False)
 
 class Menu(db.Model):
-    print("menu")
+
     __tablename__ = "TbOne"
     id = db.Column(db.Integer, primary_key=True)
     RefPartner = db.Column(db.String, unique=True, nullable=False)
@@ -121,14 +123,14 @@ def admin_only(f):
 
 @app.route('/')
 def get_all_posts():
-    print("get all posts - BOTAO HOME")
+
     posts =Menu.query.all()
     return render_template("index.html", all_posts=posts, current_user=current_user)
 
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
-    print("register")
+
     form = RegisterForm()
 
     if form.validate_on_submit():
@@ -158,7 +160,7 @@ def register():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    print("login ")
+
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -180,7 +182,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    print("logout")
+
     logout_user()
     return redirect(url_for('get_all_posts'))
 
@@ -284,20 +286,27 @@ def show_post(post_id):
 
 @app.route("/about")
 def about():
-    print("about")
+
     return render_template("about.html", current_user=current_user)
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    print("contact")
-    return render_template("contact.html", current_user=current_user)
+    form = ContactForm()
+    if form.submitEnviar.data:
+
+        e_mail = Class_email()
+        e_mail.send_email(to=form.email.data, subj="Teste e-mail", msg= f'{form.Message.data}  \n \n \n  {form.name.data}')
+
+    return render_template("contact.html", form=form, current_user=current_user)
+
+
 
 
 @app.route("/new-post", methods=["GET", "POST"])
 # @admin_only
 def add_new_post():
-    print("add new post")
+
     form = CreatePostForm()
     if form.validate_on_submit():
         new_post =Menu(
@@ -323,7 +332,7 @@ def add_new_post():
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 @admin_only
 def edit_post(post_id):
-    print("edit post")
+
     post =Menu.query.get(post_id)
     edit_form = CreatePostForm(
         title=post.title,
@@ -346,7 +355,7 @@ def edit_post(post_id):
 @app.route("/delete/<int:post_id>")
 @admin_only
 def delete_post(post_id):
-    print("delete_post")
+
     post_to_delete =Menu.query.get(post_id)
     db.session.delete(post_to_delete)
     db.session.commit()
@@ -356,3 +365,17 @@ def delete_post(post_id):
 if __name__ == "__main__":
     app.run(debug=True)
     # app.run(host='0.0.0.0', port=5000)
+
+
+# ------------------------------------------------------------------------------------------------------
+
+
+# @app.route("/contact", methods=["GET", "POST"])
+# def send_email():
+#     formsend =  ContactForm()
+#
+#     if formsend.submit.data:
+#         print("send e-mail")
+
+# ------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------

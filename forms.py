@@ -7,7 +7,7 @@ from flask_ckeditor import CKEditorField
 
 ##WTForm
 class CreatePostForm(FlaskForm):
-    print("CREATE POST FORM")
+
     RefPartner = StringField("Nossa Ref:", validators=[DataRequired()])
     Cliente = StringField("Cliente", validators=[DataRequired()])
     RefCliente = StringField("Ref Cliente", validators=[DataRequired()])
@@ -23,6 +23,16 @@ class RegisterForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     submit = SubmitField("Sign Me Up!")
 
+#     ----------------------------------------------------------
+#     ----------------------------------------------------------
+class ContactForm(FlaskForm):
+    name = StringField("Name", id="Name",validators=[DataRequired()])
+    email = StringField("Email", id="Email", validators=[DataRequired()])
+    phone = StringField("Phone", id="Phone", validators=[DataRequired()])
+    Message = StringField("Message", id="Message", validators=[DataRequired()])
+    submitEnviar = SubmitField("Enviar", id="submitEnviar")
+#     ----------------------------------------------------------
+#     ----------------------------------------------------------
 
 class FormDadosGerais(FlaskForm):
     # id = StringField("id")
@@ -81,13 +91,13 @@ class FormDadosGerais(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    print("LOGIN FORM")
+
     email = StringField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Let Me In!")
 
 
 class CommentForm(FlaskForm):
-    print("COMMENT FORM")
+
     comment_text = CKEditorField("Comment", validators=[DataRequired()])
     submit = SubmitField("Submit Comment")
